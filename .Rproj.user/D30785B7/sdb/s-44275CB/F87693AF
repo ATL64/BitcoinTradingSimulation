@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "# BitcoinTradingSimulation\n\nThe simulation shows that buying and holding gives better revenue than this simple attempt to buy low and sell high.",
+    "created" : 1503246190767.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4089260527",
+    "id" : "F87693AF",
+    "lastKnownWriteTime" : 1503246287,
+    "last_content_update" : 1503246287736,
+    "path" : "~/Documents/Projects/BitcoinTradingSimulation/README.md",
+    "project_path" : "README.md",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "markdown"
+}
