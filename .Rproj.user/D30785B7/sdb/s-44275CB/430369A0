@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "library(ggplot2)\nlibrary(anytime)\n### define between operator\n`%between%`<-function(x,rng) x>=rng[1] & x<=rng[2]\n###\n\n\n\nkraken_ts<-read.csv('kraken_eur.csv')\n\nkraken_ts<-kraken_ts[complete.cases(kraken_ts),]\nkraken_ts$time<-anytime(kraken_ts$Timestamp)\n\n\nkraken_ts<-kraken_ts[kraken_ts$time>'2016-01-01',]\nkraken_ts$Timestamp<-NULL\nkraken_ts$Open<-NULL\nkraken_ts$High<-NULL\nkraken_ts$Low<-NULL\nkraken_ts$Close<-NULL\nkraken_ts$Volume_.BTC.<-NULL\nkraken_ts$Volume_.Currency.<-NULL\n\n\n\n\nshort<-kraken_ts[kraken_ts$time>'2017-03-01',]\nshort$local_extrema<-NULL\n\n\nshort$buy_sell<-NA\nshort$current_buy_sell<-NA\n\nlp<-nrow(short)\nshort$current_buy_sell[1]<-'sell'\nshort$difference_price_transaction<-0\ncurrent_buy_price<-0\nminutes_for_change<-5760\nperc_increase<-0.015\nperc_decrease<-0.015\npercentage_profit<-0.1\n\ni<-2\nwhile(i <(lp-minutes_for_change)){\n  if(short$current_buy_sell[i-1]=='sell'){\n    if(short$Weighted_Price[i]<short$Weighted_Price[i-1]&short$Weighted_Price[i]<short$Weighted_Price[i+1]){ #check for local min\n      if(any((short$Weighted_Price[(i+1):(i+minutes_for_change)]-short$Weighted_Price[i])/short$Weighted_Price[i]>=perc_increase)){ #check if there is 2% increase\n        ind<-which((short$Weighted_Price[(i+1):(i+minutes_for_change)]-short$Weighted_Price[i])/short$Weighted_Price[i]>=perc_increase)[1]\n        short$buy_sell[i+ind]<-'buy'\n        short$current_buy_sell[i+ind]<-'buy'\n        current_buy_price<-short$Weighted_Price[i+ind]\n        i<-i+ind+1\n      }else{\n        short$current_buy_sell[i]<-'sell'  \n        i<-i+1}\n    }else{\n      short$current_buy_sell[i]<-'sell'\n      i<-i+1}\n  }else{#being that current_buy_sell=='buy'\n    if(short$Weighted_Price[i]>short$Weighted_Price[i-1]&short$Weighted_Price[i]>short$Weighted_Price[i+1]){ #check for local max\n      if(any((short$Weighted_Price[(i+1):(i+minutes_for_change)]-short$Weighted_Price[i])/short$Weighted_Price[i]<=-perc_decrease)){ #check if there is 2% decrease\n        ind<-which((short$Weighted_Price[(i+1):(i+minutes_for_change)]-short$Weighted_Price[i])/short$Weighted_Price[i]<=-perc_decrease)[1]\n        ten_perc<-(short$Weighted_Price[i+ind]-current_buy_price)/short$Weighted_Price[i+ind]\n        if(ten_perc>percentage_profit){\n          short$buy_sell[i+ind]<-'sell'\n          short$current_buy_sell[i+ind]<-'sell'\n          short$difference_price_transaction[i+ind]<-ten_perc\n          i<-i+ind+1\n        }else{\n          short$current_buy_sell[i]<-'buy'  \n          i<-i+1}\n        \n      }else{\n        short$current_buy_sell[i]<-'buy'  \n        i<-i+1}\n    }else{\n      short$current_buy_sell[i]<-'buy'  \n      i<-i+1}\n  }\n  print(i)\n}\n\n\n\n\n\n\n\nView(short[short$difference_price_transaction!=0,])\n\nsum(short[short$difference_price_transaction!=0,]$difference_price_transaction*2000)\n\n\n\n",
+    "created" : 1503229371534.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3788497053",
+    "id" : "430369A0",
+    "lastKnownWriteTime" : 1503245434,
+    "last_content_update" : 1503245434909,
+    "path" : "~/Documents/Projects/BitcoinTradingSimulation/TradingSimulation.R",
+    "project_path" : "TradingSimulation.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
